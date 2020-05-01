@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationBar=findViewById(R.id.bottom_navigation)
         bottomNavigationBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
+        bottomNavigationBar.selectedItemId=R.id.option_images
     }
 
     fun openFragment(fragment: Fragment?) {

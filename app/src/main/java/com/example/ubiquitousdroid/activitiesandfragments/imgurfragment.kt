@@ -1,20 +1,20 @@
 package com.example.ubiquitousdroid.activitiesandfragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-
 import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.imageAdapter
 import com.example.ubiquitousdroid.models.ImageObject
 import com.example.ubiquitousdroid.network.status
 import com.example.ubiquitousdroid.viewModels.allImageViewModel
 import kotlinx.android.synthetic.main.fragment_imgur.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -45,7 +45,7 @@ class imgurfragment : Fragment() {
     }
 
     private fun setupUI() {
-        adapter = imageAdapter(arrayListOf())
+        adapter = imageAdapter(arrayListOf(),{ item:ImageObject -> rvItemClicked(item) })
         /* recyclerView.addItemDecoration(
              DividerItemDecoration(
                  recyclerView.context,
@@ -89,5 +89,20 @@ class imgurfragment : Fragment() {
                 notifyDataSetChanged()
             }
         }
+    }
+
+    private fun rvItemClicked(objecty:ImageObject){
+//        Toast.makeText(context," name : "+objecty.name,Toast.LENGTH_SHORT).show()
+        val addPhotoBottomDialogFragment =
+            FullBottomSheetDialogFragment()
+        val bundle = Bundle()
+        bundle.putString("title", objecty.name)
+        bundle.putString("imageUrl",objecty.url)
+        addPhotoBottomDialogFragment.arguments = bundle
+//        addPhotoBottomDialogFragment.setData(objecty)
+        addPhotoBottomDialogFragment.show(
+            activity!!.supportFragmentManager,
+            "add_photo_dialog_fragment"
+        )
     }
 }

@@ -21,6 +21,7 @@ class fileUtil {
                 //outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
                 var i = 0
                 while (i < list.size) {
+                    Log.d("Commontag"," writing "+(i+1).toString())
                     outputStream.write(((i+1).toString() + ",").toByteArray())
                     outputStream.write((list.get(i).name + ",").toByteArray())
                     outputStream.write((list.get(i).number + "\n").toByteArray())
@@ -44,7 +45,7 @@ class fileUtil {
                 )
                 val data = ByteArray(BUFFER)
                 for (i in 0 until listOfFiles.size) {
-                    Log.v("commontag", "Adding: " + listOfFiles.get(i))
+                    Log.d("commontag", "compressing Adding: " + listOfFiles.get(i))
                     val fi = FileInputStream(File(directoryDownload,listOfFiles.get(i)))
                     origin = BufferedInputStream(fi, BUFFER)
                     val entry =
@@ -56,10 +57,10 @@ class fileUtil {
                     }
                     origin.close()
                 }
-                Log.v("commontag", "compression complete")
+                Log.d("commontag", "compression complete")
                 out.close()
             } catch (e: java.lang.Exception) {
-                Log.v("commontag", "compression failed")
+                Log.d("commontag", "compression failed")
                 e.printStackTrace()
             }
         }

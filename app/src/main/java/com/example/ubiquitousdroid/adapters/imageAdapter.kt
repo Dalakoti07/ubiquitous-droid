@@ -9,17 +9,18 @@ import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.models.ImageObject
 import kotlinx.android.synthetic.main.item_img_layout.view.*
 
-class imageAdapter (private val images: ArrayList<ImageObject>) : RecyclerView.Adapter<imageAdapter.DataViewHolder>() {
+class imageAdapter (private val images: ArrayList<ImageObject>, val clickListener: (item:ImageObject)-> Unit) : RecyclerView.Adapter<imageAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(image: ImageObject) {
+        fun bind(image: ImageObject, clickListener: (item: ImageObject) -> Unit) {
             itemView.apply {
                 tv_desc.text = image.name
                 Glide.with(iv_photo.context)
                     .load(image.url)
                     .into(iv_photo)
             }
+            itemView.setOnClickListener{ clickListener(image) }
         }
     }
 
@@ -29,7 +30,7 @@ class imageAdapter (private val images: ArrayList<ImageObject>) : RecyclerView.A
     override fun getItemCount(): Int = images.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(images[position])
+        holder.bind(images[position],clickListener)
     }
 
     fun addUsers(images: List<ImageObject>) {

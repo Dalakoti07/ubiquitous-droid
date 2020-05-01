@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_contact.*
 
 class contactFragment : Fragment() {
     val MY_PERMISSIONS_REQUEST_READ_CONTACTS =7
+    lateinit var allContacts: ArrayList<contactObject>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +33,9 @@ class contactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getThePermission()
         btn_zip.setOnClickListener(View.OnClickListener {
-            getThePermission()
+            fileUtil.saveAFileWithName("phoneContact.csv",allContacts)  // csv and zip conversion in some place
         })
     }
 
@@ -60,7 +62,7 @@ class contactFragment : Fragment() {
     }
 
     private fun getTheContacts() {
-        val allContacts = arrayListOf<contactObject>()
+        allContacts=ArrayList<contactObject>()
         val phones = activity!!.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phones!!.moveToNext()) {
             val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
@@ -73,7 +75,6 @@ class contactFragment : Fragment() {
 
         val customAdapter = phoneContactAdapter(context!!, allContacts)
         listView!!.adapter = customAdapter
-        fileUtil.saveAFileWithName("phoneContact.csv",allContacts)  // csv and zip conversion in some place
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

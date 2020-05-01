@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ubiquitousdroid.R
-import com.example.ubiquitousdroid.network.ImageObject
+import com.example.ubiquitousdroid.models.ImageObject
 import kotlinx.android.synthetic.main.item_img_layout.view.*
 
 class imageAdapter (private val images: ArrayList<ImageObject>) : RecyclerView.Adapter<imageAdapter.DataViewHolder>() {

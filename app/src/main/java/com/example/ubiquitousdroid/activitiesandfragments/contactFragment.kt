@@ -13,9 +13,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ubiquitousdroid.R
+import com.example.ubiquitousdroid.adapters.phoneContactAdapter
+import com.example.ubiquitousdroid.models.contactObject
+import com.example.ubiquitousdroid.utils.fileUtil
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_contact.*
-import java.util.jar.Manifest
 
 class contactFragment : Fragment() {
     val MY_PERMISSIONS_REQUEST_READ_CONTACTS =7
@@ -46,8 +48,8 @@ class contactFragment : Fragment() {
                 } else {
                     // No explanation needed; request the permission
                     ActivityCompat.requestPermissions(activity!!,
-                         arrayOf(android.Manifest.permission.READ_CONTACTS),
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                         arrayOf(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS)
                     // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 }
             }
@@ -58,33 +60,20 @@ class contactFragment : Fragment() {
     }
 
     private fun getTheContacts() {
-        // Sets the columns to retrieve for the user profile
-        val projection = arrayOf(
-            ContactsContract.Profile._ID,
-            ContactsContract.Profile.DISPLAY_NAME_PRIMARY,
-            ContactsContract.Profile.LOOKUP_KEY,
-            ContactsContract.Profile.PHOTO_THUMBNAIL_URI
-        )
-
-        // Retrieves the profile from the Contacts Provider
-        val contentResolver =activity!!.contentResolver
-//        Log.d("commonTag","content resolver is "+contentResolver.toString())
-        val profileCursor = contentResolver.query(
-            ContactsContract.Profile.CONTENT_URI,
-            projection,
-            null,
-            null,
-            null
-        )
-        if( profileCursor!=null && profileCursor.count>0){
-            Log.d("commonTag"," cursor not null")
-            while(profileCursor.moveToNext()){
-                Log.d("commonTag",profileCursor.getString(0)+" "+profileCursor.getString(1)+profileCursor.getString(2))
-            }
-            profileCursor.close()
-        }else{
-            Log.d("commonTag"," cursor is null")
+        val allContacts = arrayListOf<contactObject>()
+        val phones = activity!!.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
+        while (phones!!.moveToNext()) {
+            val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+            val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            val contactModel = contactObject(name,"0",phoneNumber)
+            allContacts.add(contactModel)
+//            Log.d("commonTag", name + "  " + phoneNumber)
         }
+        phones.close()
+
+        val customAdapter = phoneContactAdapter(context!!, allContacts)
+        listView!!.adapter = customAdapter
+        fileUtil.saveAFileWithName("phoneContact.csv",allContacts)  // csv and zip conversion in some place
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

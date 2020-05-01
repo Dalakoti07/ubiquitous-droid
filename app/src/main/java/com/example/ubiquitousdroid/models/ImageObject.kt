@@ -1,4 +1,4 @@
-package com.example.ubiquitousdroid.network
+package com.example.ubiquitousdroid.models
 
 import com.google.gson.annotations.SerializedName
 

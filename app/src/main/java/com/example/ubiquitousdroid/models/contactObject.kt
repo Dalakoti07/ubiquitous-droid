@@ -1,6 +1,6 @@
 package com.example.ubiquitousdroid.models
 
-data class phoneObject(
+data class contactObject(
    val name:String,
    val id:String,
     val number:String

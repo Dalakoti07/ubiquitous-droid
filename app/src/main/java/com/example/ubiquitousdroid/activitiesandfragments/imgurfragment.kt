@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.imageAdapter
-import com.example.ubiquitousdroid.network.ImageObject
+import com.example.ubiquitousdroid.models.ImageObject
 import com.example.ubiquitousdroid.network.status
 import com.example.ubiquitousdroid.viewModels.allImageViewModel
 import kotlinx.android.synthetic.main.fragment_imgur.*
@@ -78,9 +78,16 @@ class imgurfragment : Fragment() {
         })
     }
     private fun retrieveList(images: List<ImageObject>) {
-        adapter.apply {
-            addUsers(images)
-            notifyDataSetChanged()
+        if(images.size>10){
+            adapter.apply {
+                addUsers(images.subList(0,16))
+                notifyDataSetChanged()
+            }
+        }else{
+            adapter.apply {
+                addUsers(images)
+                notifyDataSetChanged()
+            }
         }
     }
 }

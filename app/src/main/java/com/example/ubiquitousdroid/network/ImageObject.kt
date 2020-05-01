@@ -6,5 +6,5 @@ data class ImageObject(@SerializedName("id")
                        val id: String = "",
                        @SerializedName("title")
                        val name: String = "",
-                       @SerializedName("url")
+                       @SerializedName("link")
                        val url: String = "")

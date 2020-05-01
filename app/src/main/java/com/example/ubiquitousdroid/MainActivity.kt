@@ -35,14 +35,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = imageAdapter(arrayListOf())
-        recyclerView.addItemDecoration(
+       /* recyclerView.addItemDecoration(
             DividerItemDecoration(
                 recyclerView.context,
                 (recyclerView.layoutManager as LinearLayoutManager).orientation
             )
-        )
+        )*/
         recyclerView.adapter = adapter
     }
 

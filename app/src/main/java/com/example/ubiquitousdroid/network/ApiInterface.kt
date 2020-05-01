@@ -7,6 +7,6 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface ApiInterface {
-    @GET("gallery/r/game/")
+    @GET("gallery/r/programming/")
     suspend fun getAllImages(): apiResponse
 }

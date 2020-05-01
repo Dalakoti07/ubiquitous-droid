@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/option_images" android:title="IMGUR" android:icon="@drawable/ic_image_black_24dp"/>
+    <item android:id="@+id/option_uploaded" android:title="Uploaded Photos" android:icon="@drawable/ic_multimedia"/>
+    <item android:id="@+id/option_Contacts" android:title="Contacts" android:icon="@drawable/ic_contact"/>
+</menu>

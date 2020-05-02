@@ -1,6 +1,12 @@
 package com.example.ubiquitousdroid.activitiesandfragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_upload.*
 class uploadFragment : Fragment() {
     private lateinit var viewModel: getImagesViewModel
     private lateinit var adapter: imageAdapter
+    val REQUEST_IMAGE_CAPTURE = 1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,11 +37,42 @@ class uploadFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        floating_action_button.setOnClickListener{ getCameraAndUploadImage() }
         setupViewModel()
         setupUI()
         setupObservers()
     }
 
+    private fun getCameraAndUploadImage() {
+        if(checkCameraHardware(context!!)){
+            dispatchTakePictureIntent()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // make a bottom sheet and then display stuff in there
+            val imageBitmap = data!!.extras!!.get("data") as Bitmap
+            val uploaddialog =uploadDialog(imageBitmap, {img :Bitmap -> uploadImage(img)} )
+            uploaddialog.show(activity!!.supportFragmentManager,"dialog")
+//            imageView.setImageBitmap(imageBitmap)
+        }
+    }
+
+    private fun uploadImage(image: Bitmap){
+        Toast.makeText(context," upload clicked ",Toast.LENGTH_SHORT).show()
+    }
+
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
+    private fun checkCameraHardware(context: Context): Boolean {
+        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
+    }
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this

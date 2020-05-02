@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.ubiquitousdroid.R
+import com.example.ubiquitousdroid.network.ApiInterface
+import com.example.ubiquitousdroid.network.RetrofitInstanceProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNavigationBar :BottomNavigationView
-
+    companion object{
+        val apiinterface: ApiInterface = RetrofitInstanceProvider.getRetrofitInstance()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

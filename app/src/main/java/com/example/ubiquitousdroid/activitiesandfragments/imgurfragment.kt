@@ -12,7 +12,7 @@ import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.imageAdapter
 import com.example.ubiquitousdroid.models.ImageObject
 import com.example.ubiquitousdroid.network.status
-import com.example.ubiquitousdroid.viewModels.allImageViewModel
+import com.example.ubiquitousdroid.viewModels.getImagesViewModel
 import kotlinx.android.synthetic.main.fragment_imgur.*
 
 
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_imgur.*
  * A simple [Fragment] subclass.
  */
 class imgurfragment : Fragment() {
-    private lateinit var viewModel: allImageViewModel
+    private lateinit var viewModel: getImagesViewModel
     private lateinit var adapter: imageAdapter
 
     override fun onCreateView(
@@ -41,22 +41,16 @@ class imgurfragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this
-        ).get(allImageViewModel::class.java)
+        ).get(getImagesViewModel::class.java)
     }
 
     private fun setupUI() {
         adapter = imageAdapter(arrayListOf(),{ item:ImageObject -> rvItemClicked(item) })
-        /* recyclerView.addItemDecoration(
-             DividerItemDecoration(
-                 recyclerView.context,
-                 (recyclerView.layoutManager as LinearLayoutManager).orientation
-             )
-         )*/
         recyclerView.adapter = adapter
     }
 
     private fun setupObservers() {
-        viewModel.getUsers().observe(this, Observer {
+        viewModel.getImages().observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     status.SUCCESS -> {

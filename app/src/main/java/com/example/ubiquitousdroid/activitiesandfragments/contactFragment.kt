@@ -12,16 +12,23 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.phoneContactAdapter
 import com.example.ubiquitousdroid.models.contactObject
 import com.example.ubiquitousdroid.utils.fileUtil
+import com.example.ubiquitousdroid.viewModels.filesViewModel
+import com.example.ubiquitousdroid.viewModels.getImagesViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_contact.*
 
 class contactFragment : Fragment() {
     val MY_PERMISSIONS_REQUEST_READ_CONTACTS =7
-    lateinit var allContacts: ArrayList<contactObject>
+    companion object{
+        val filrName="phoneContact.csv"
+        lateinit var allContacts: ArrayList<contactObject>
+    }
+    private lateinit var viewModel :filesViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,8 +41,13 @@ class contactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getThePermission()
+        viewModel= ViewModelProviders.of(
+            this
+        ).get(filesViewModel::class.java)
+
         btn_zip.setOnClickListener(View.OnClickListener {
-            fileUtil.saveAFileWithName("phoneContact.csv",allContacts)  // csv and zip conversion in some place
+//            fileUtil.saveAFileWithName("phoneContact.csv",allContacts)  // csv and zip conversion in some place
+            viewModel.GenerateAndZipFile()
         })
     }
 

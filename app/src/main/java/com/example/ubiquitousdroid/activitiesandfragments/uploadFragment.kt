@@ -82,6 +82,7 @@ class uploadFragment : Fragment() {
                 resource ->
                 when (resource.status) {
                     status.SUCCESS -> {
+                        progressBar.visibility = View.INVISIBLE
                         Toast.makeText(context," uploaded ",Toast.LENGTH_LONG).show()
                     }
                     status.ERROR -> {

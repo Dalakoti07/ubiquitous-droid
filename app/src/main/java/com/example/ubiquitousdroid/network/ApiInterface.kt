@@ -10,7 +10,7 @@ interface ApiInterface {
     suspend fun getAllImages(@Header("Authorization") authHeader:String): getImagesApiResponse
 
     @Multipart
-    @POST("image")
+    @POST("upload")
     suspend fun postAnImage(@Header("Authorization") authHeader:String,
                             @Part file:MultipartBody.Part,
                             @Part("album") album:RequestBody,

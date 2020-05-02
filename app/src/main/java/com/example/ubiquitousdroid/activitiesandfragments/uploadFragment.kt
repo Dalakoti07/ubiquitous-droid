@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +20,15 @@ import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.imageAdapter
 import com.example.ubiquitousdroid.models.ImageObject
 import com.example.ubiquitousdroid.network.status
+import com.example.ubiquitousdroid.utils.fileUtil
+import com.example.ubiquitousdroid.viewModels.UploadFileViewModel
 import com.example.ubiquitousdroid.viewModels.getImagesViewModel
+import com.example.ubiquitousdroid.viewModels.uploadedImageViewModel
 import kotlinx.android.synthetic.main.fragment_imgur.progressBar
 import kotlinx.android.synthetic.main.fragment_upload.*
 
 class uploadFragment : Fragment() {
+    private lateinit var uploadImageviewmodel :UploadFileViewModel
     private lateinit var viewModel: getImagesViewModel
     private lateinit var adapter: imageAdapter
     val REQUEST_IMAGE_CAPTURE = 1
@@ -60,7 +66,34 @@ class uploadFragment : Fragment() {
     }
 
     private fun uploadImage(image: Bitmap){
-        Toast.makeText(context," upload clicked ",Toast.LENGTH_SHORT).show()
+        val imagePath:String=fileUtil.saveAnImaage(context!!,image)
+        if( imagePath.length >1){
+            Log.d("commonTag"," file is saved ${imagePath}  ")
+            Toast.makeText(context," saved ",Toast.LENGTH_LONG).show()
+            setupFileUploadViewModel(imagePath)
+        }else{
+            Toast.makeText(context," unable to save image ",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupFileUploadViewModel(imagePath: String) {
+        uploadImageviewmodel.uploadImage(imagePath).observe(this, Observer {
+            it?.let {
+                resource ->
+                when (resource.status) {
+                    status.SUCCESS -> {
+                        Toast.makeText(context," uploaded ",Toast.LENGTH_LONG).show()
+                    }
+                    status.ERROR -> {
+                        progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                    }
+                    status.LOADING -> {
+                        progressBar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
     }
 
     private fun dispatchTakePictureIntent() {
@@ -70,13 +103,17 @@ class uploadFragment : Fragment() {
             }
         }
     }
+
     private fun checkCameraHardware(context: Context): Boolean {
         return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
     }
+
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this
         ).get(getImagesViewModel::class.java)
+
+        uploadImageviewmodel= ViewModelProviders.of(this).get(UploadFileViewModel::class.java)
     }
 
     private fun setupUI() {

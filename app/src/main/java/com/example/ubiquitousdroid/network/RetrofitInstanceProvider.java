@@ -33,10 +33,8 @@ public class RetrofitInstanceProvider{
                                       public Response intercept(Interceptor.Chain chain) throws IOException {
                                           Request original = chain.request();
                                           Request request = original.newBuilder()
-                                                  .header("Authorization", "Client-ID a73c8ca2ffde994")
                                                   .method(original.method(), original.body())
                                                   .build();
-
                                           return chain.proceed(request);
                                       }
                                   });

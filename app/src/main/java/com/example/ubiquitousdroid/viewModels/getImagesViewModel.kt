@@ -12,7 +12,7 @@ class getImagesViewModel : ViewModel() {
     fun getImages() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = MainActivity.apiinterface.getAllImages()))
+            emit(Resource.success(data = MainActivity.apiinterface.getAllImages("Client-ID a73c8ca2ffde994")))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, msg = exception.message ?: "Error Occurred!"))
         }
@@ -21,7 +21,7 @@ class getImagesViewModel : ViewModel() {
     fun getUploadedImages() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = MainActivity.apiinterface.getImagesFromGallery()))
+            emit(Resource.success(data = MainActivity.apiinterface.getImagesFromGallery("Client-ID a73c8ca2ffde994")))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, msg = exception.message ?: "Error Occurred!"))
         }

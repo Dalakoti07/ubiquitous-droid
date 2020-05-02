@@ -1,9 +1,13 @@
 package com.example.ubiquitousdroid.utils
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
 import com.example.ubiquitousdroid.models.contactObject
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -62,6 +66,19 @@ class fileUtil {
             } catch (e: java.lang.Exception) {
                 Log.d("commontag", "compression failed")
                 e.printStackTrace()
+            }
+        }
+
+        fun saveAnImaage(context: Context,image : Bitmap):String{
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            if(storageDir!=null){
+                val imageFile=File(storageDir,"JPEG_${timeStamp}_.jpg")
+                val outputStream = FileOutputStream(imageFile, false)
+                image.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                return imageFile.absolutePath
+            }else{
+                return ""
             }
         }
     }

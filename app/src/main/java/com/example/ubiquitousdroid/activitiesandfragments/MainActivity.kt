@@ -22,7 +22,14 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationBar=findViewById(R.id.bottom_navigation)
         bottomNavigationBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
-        bottomNavigationBar.selectedItemId=R.id.option_images
+        setDefaultfragment()
+    }
+
+    private fun setDefaultfragment() {
+        val fragment =imgurfragment()
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.commit()
     }
 
     fun openFragment(fragment: Fragment?) {

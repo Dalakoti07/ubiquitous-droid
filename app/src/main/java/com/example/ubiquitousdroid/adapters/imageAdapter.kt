@@ -18,6 +18,7 @@ class imageAdapter (private val images: ArrayList<ImageObject>, val clickListene
                 tv_desc.text = image.name
                 Glide.with(iv_photo.context)
                     .load(image.url)
+                    .placeholder(R.drawable.ic_photo)
                     .into(iv_photo)
             }
             itemView.setOnClickListener{ clickListener(image) }

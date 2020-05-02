@@ -20,6 +20,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import static com.example.ubiquitousdroid.utils.ConstantsKt.CommonTag;
+
 public class FullBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private BottomSheetBehavior mBehavior;
@@ -30,7 +32,7 @@ public class FullBottomSheetDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("commonTag","oncreate called of bottomsheet");
+        Log.d(CommonTag,"oncreate called of bottomsheet");
     }
 
     @NonNull
@@ -39,7 +41,7 @@ public class FullBottomSheetDialogFragment extends BottomSheetDialogFragment {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
 
         view = View.inflate(getContext(), R.layout.layout_bottomsheet, null);
-        Log.d("commonTag","oncreateDialog called of bottomsheet and title is "+getArguments().get("title"));
+        Log.d(CommonTag,"oncreateDialog called of bottomsheet and title is "+getArguments().get("title"));
         iv_photo=view.findViewById(R.id.iv_picture);
         tv_photo_title=view.findViewById(R.id.tv_photo_title);
         setData(new ImageObject("1",getArguments().get("title").toString(),getArguments().get("imageUrl").toString()));
@@ -66,10 +68,10 @@ public class FullBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private void setData(ImageObject objecty){
         if(view == null){
-            Log.d("commonTag"," its null");
+            Log.d(CommonTag," its null");
             return;
         }
-        Log.d("commonTag"," its not null");
+        Log.d(CommonTag," its not null");
         tv_photo_title.setText(objecty.getName());
         Glide
                 .with(iv_photo)

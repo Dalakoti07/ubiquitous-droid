@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.ubiquitousdroid.R
 import com.example.ubiquitousdroid.adapters.phoneContactAdapter
 import com.example.ubiquitousdroid.models.contactObject
+import com.example.ubiquitousdroid.utils.CommonTag
 import com.example.ubiquitousdroid.utils.fileUtil
 import com.example.ubiquitousdroid.viewModels.filesViewModel
 import com.example.ubiquitousdroid.viewModels.getImagesViewModel
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_contact.*
 class contactFragment : Fragment() {
     val MY_PERMISSIONS_REQUEST_READ_CONTACTS =7
     companion object{
-        val filrName="phoneContact.csv"
+        const val filrName="phoneContact.csv"
         lateinit var allContacts: ArrayList<contactObject>
     }
     private lateinit var viewModel :filesViewModel
@@ -40,6 +41,7 @@ class contactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(CommonTag," onview created called  ")
         getThePermission()
         viewModel= ViewModelProviders.of(
             this
@@ -52,6 +54,7 @@ class contactFragment : Fragment() {
     }
 
     private fun getThePermission() {
+        Log.d(CommonTag," asking permission function")
         if (ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.READ_CONTACTS)
             != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
@@ -74,6 +77,7 @@ class contactFragment : Fragment() {
     }
 
     private fun getTheContacts() {
+        Log.d(CommonTag,  "getting contact called ")
         allContacts=ArrayList<contactObject>()
         val phones = activity!!.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
         while (phones!!.moveToNext()) {
@@ -81,7 +85,7 @@ class contactFragment : Fragment() {
             val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             val contactModel = contactObject(name,"0",phoneNumber)
             allContacts.add(contactModel)
-//            Log.d("commonTag", name + "  " + phoneNumber)
+//            Log.d(CommonTag, name + "  " + phoneNumber)
         }
         phones.close()
 
@@ -91,6 +95,7 @@ class contactFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
+        Log.d(CommonTag," onrequest result called ")
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_READ_CONTACTS -> {
                 // If request is cancelled, the result arrays are empty.

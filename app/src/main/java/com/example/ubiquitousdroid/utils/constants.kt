@@ -18,3 +18,4 @@ const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
 const val TAG_OUTPUT = "OUTPUT"
 const val KEY_FILE_TO_BE_ZIPPED="KEY_FILE_TO_BE_ZIPPED"
 const val DELAY_TIME_MILLIS: Long = 2000
+const val CommonTag:String ="CommonTag"
